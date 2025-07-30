@@ -1,0 +1,1 @@
+# mawingu-nosql-workshop
