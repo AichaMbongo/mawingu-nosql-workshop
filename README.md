@@ -3,11 +3,12 @@
 **Unit Code:** MIT 8107  
 **Course:** Advanced Database Systems  
 **Date:** 30th July 2025  
-**Group Members:**  
-- Aicha Mbongo 
-- Joel Mutevu 
-- Brian Githenya 
-- Alan 
+**Group Members:**
+
+- Aicha Mbongo
+- Joel Mutevu
+- Brian Githenya
+- Alan
 
 ---
 
@@ -65,7 +66,7 @@ Use context-specific examples like:
 db.products.insertOne({
   name: "Laptop",
   price: 999,
-  category: "Electronics"
+  category: "Electronics",
 });
 ```
 
@@ -78,12 +79,149 @@ Explain each command and expected result.
 <details>
 <summary><strong>🧩 D. Applied Scenario</strong></summary>
 
-Describe a real-life scenario where your chosen model is useful. Include:
+## 🧩 Real-Life Scenario: Professional Networking and Recommendations on LinkedIn
 
-- A brief background of the problem
-- Why the data model fits
-- Sample data (structure and content)
-- Example queries with output
+---
+
+### 🔍 Background of the Problem
+
+In professional social networks like **LinkedIn**, users seek to:
+
+- Connect with other professionals
+- Find job opportunities
+- Endorse skills
+- Join relevant groups
+
+The platform requires an efficient way to store and query **complex relationships**—like user connections, employment history, skill endorsements, and group memberships—to provide personalized recommendations and insights.
+
+---
+
+### 🧠 Why the Graph Data Model Fits
+
+Graph databases naturally model relationships between entities using **nodes** and **edges**, making them ideal for highly interconnected data.
+
+- 👤 **Nodes**: Users, Companies, Skills, Groups
+- 🔗 **Edges**: Friendships, Employment, Endorsements, Group Memberships
+
+**Benefits:**
+
+- Easy traversal for “friends of friends” queries
+- Efficient skill matching and community detection
+- Superior performance in recursive and join-like queries
+
+> Unlike relational databases, graph databases **excel at relationship traversal** and perform better for deeply nested queries.
+
+---
+
+### 📦 Sample Data (Structure and Content)
+
+#### 🔹 Nodes
+
+| Node Type | Attributes                      |
+| --------- | ------------------------------- |
+| User      | `userID`, `name`, `headline`    |
+| Company   | `companyID`, `name`, `industry` |
+| Skill     | `skillID`, `name`               |
+| Group     | `groupID`, `name`, `field`      |
+
+#### 🔸 Relationships
+
+| Relationship Type | Description                           |
+| ----------------- | ------------------------------------- |
+| `CONNECTED_TO`    | User ↔ User (Professional connection) |
+| `WORKS_AT`        | User → Company                        |
+| `ENDORSED`        | User → Skill                          |
+| `MEMBER_OF`       | User → Group                          |
+
+---
+
+### 🧪 Example Data
+
+#### 🧍 Nodes
+
+```json
+User: { "userID": 1, "name": "Wanjiku Mwangi", "headline": "Software Engineer" }
+Company: { "companyID": 101, "name": "Nairobi Tech Hub", "industry": "Software" }
+Skill: { "skillID": 201, "name": "Python" }
+Group: { "groupID": 301, "name": "AI in Africa", "field": "Technology" }
+```
+
+#### 🔗 Relationships
+
+```plaintext
+Wanjiku —CONNECTED_TO→ Otieno
+Wanjiku —WORKS_AT→ Nairobi Tech Hub
+Otieno —ENDORSED→ Python
+Achieng —MEMBER_OF→ AI in Africa
+```
+
+---
+
+### 🔎 Example Queries with Output
+
+#### 1. Find friends of a user (2nd-degree connections):
+
+```cypher
+MATCH (user:User {name: "Wanjiku Mwangi"})-[:CONNECTED_TO]->(:User)-[:CONNECTED_TO]->(fof)
+WHERE NOT (user)-[:CONNECTED_TO]->(fof) AND user <> fof
+RETURN DISTINCT fof.name AS RecommendedConnections
+```
+
+**Output:**
+
+| RecommendedConnections |
+| ---------------------- |
+| Brian Kiptoo           |
+| Aisha Mohamed          |
+
+---
+
+#### 2. List skills endorsed for a user:
+
+```cypher
+MATCH (user:User {name: "Otieno Ouma"})-[:ENDORSED]->(skill)
+RETURN skill.name AS Skills
+```
+
+**Output:**
+
+| Skills |
+| ------ |
+| Python |
+| Java   |
+
+---
+
+#### 3. Find users who work at the same company:
+
+```cypher
+MATCH (u1:User)-[:WORKS_AT]->(company {name: "Nairobi Tech Hub"})<-[:WORKS_AT]-(u2:User)
+WHERE u1.name = "Wanjiku Mwangi" AND u1 <> u2
+RETURN u2.name AS Colleagues
+```
+
+**Output:**
+
+| Colleagues    |
+| ------------- |
+| Achieng Njeri |
+
+---
+
+#### 4. Find communities (groups) a user is a member of:
+
+```cypher
+MATCH (user:User {name: "Achieng Njeri"})-[:MEMBER_OF]->(group)
+RETURN group.name AS Groups
+```
+
+**Output:**
+
+| Groups       |
+| ------------ |
+| AI in Africa |
+
+---
 
 </details>
 
@@ -150,14 +288,14 @@ Ensure:
 <details>
 <summary><strong>🧑‍🤝‍🧑 H. Collaboration Summary</strong></summary>
 
-| Member Name | Main Contribution                          | Detailed Responsibilities                                                                                                                                                                       |
-|-------------|--------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Group member 1| Docker setup, environment configuration    | Set up Docker container or direct installation; ensure database instance runs correctly. This is critical to provide the environment for all other tasks.                                       |
-|Group member 2| CRUD operations implementation and scripting| Write and test Create, Read, Update, Delete operations scripts and commands. This depends on the environment being ready.                                                                       |
-| Aicha    | Scenario design and screenshots collection | Design the realistic scenario use case and take screenshots of outputs and interface to illustrate steps clearly.                                                                               |
-| Group member 4 | Dataset creation and query optimization    | Develop sample datasets used for CRUD demos, optimize queries, and verify performance and correctness. Supports CRUD and scenario tasks.                                                        |
+| Member Name | Main Contribution                            | Detailed Responsibilities                                                                                                                                                                                                                                                                                                                                                                  |
+| ----------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Allan       | Docker setup, environment configuration      | 1. Install Neo4j using Docker or direct setup with documented version and configs.<br>2. Verify Neo4j instance runs.<br>3. Provide connection instructions for team (CLI/GUI).<br>4. Troubleshoot setup issues.<br>5. Document environment setup clearly in the lab manual.                                                                                                                |
+| Brian       | CRUD operations implementation and scripting | 1. Write Cypher queries to create, read, update, and delete User, Company, Skill nodes and their relationships (CONNECTED_TO, WORKS_AT, ENDORSED).<br>2. Test each CRUD operation with the sample dataset.<br>3. Annotate queries with comments for clarity.<br>4. Work closely withJoel to ensure queries align with dataset structure.                                                   |
+| Aicha       | Scenario design and screenshots collection   | 1. Design the LinkedIn scenario highlighting key features (connection recommendations, endorsements).<br>2. Draft clear, beginner-friendly explanations.<br>3. Collect screenshots of query results and database outputs.<br>4. Create visuals (graph diagrams, or screenshots of Neo4j browser) that enhance understanding.<br>5. Organize scenario walkthrough logically.                |
+| Joel        | Dataset creation and query optimization      | 1. Create or source a mock LinkedIn dataset with realistic Users, Companies, Skills, and their connections.<br>2. Format data for easy Neo4j import (CSV/JSON).<br>3. Collaborate with Brian to align dataset structure with CRUD queries.<br>4. Optimize query performance by suggesting indexes or refactoring.<br>5. Test dataset with team and verify all lab operations run smoothly. |
 
-Each member must contribute meaningfully and be listed here.
+                                                                                                                                                                   |
 
 </details>
 
@@ -178,7 +316,7 @@ Make sure your GitHub repo includes:
 ## ✅ Final Submission Checklist
 
 | Task                             | Status |
-|----------------------------------|--------|
+| -------------------------------- | ------ |
 | Lab guide tested end-to-end      | ✅     |
 | Markdown is clear and organized  | ✅     |
 | Screenshots are included         | ✅     |
@@ -186,4 +324,3 @@ Make sure your GitHub repo includes:
 | Repo includes all required files | ✅     |
 
 ---
-
