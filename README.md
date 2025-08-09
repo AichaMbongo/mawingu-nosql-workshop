@@ -569,6 +569,8 @@ Through the Neo4j CRUD operations, we have demonstrated:
 
 </details>
 
+---
+
 <details>
 
 <summary><strong> D. Applied Scenario</strong></summary>
