@@ -1,4 +1,4 @@
-# 🗂️ Hands-On Lab: [Title, e.g., "Product Catalog with MongoDB" or "Social Network with Neo4j"]
+# Hands-On Lab: [Title, e.g., "Product Catalog with MongoDB" or "Social Network with Neo4j"]
 
 **Unit Code:** MIT 8107  
 **Course:** Advanced Database Systems  
@@ -13,7 +13,7 @@
 ---
 
 <details>
-<summary><strong>📘 A. Introduction</strong></summary>
+<summary><strong>A. Introduction</strong></summary>
 
 Briefly introduce your chosen NoSQL data model. Include:
 
@@ -26,17 +26,17 @@ Briefly introduce your chosen NoSQL data model. Include:
 ---
 
 <details>
-<summary><strong>⚙️ B. Setup Instructions</strong></summary>
+<summary><strong>B. Setup Instructions</strong></summary>
 
 Use Docker for consistency and reproducibility.
 
-### ✅ Example (MongoDB):
+###Example (MongoDB):
 
 ```bash
 docker run --name mongodb -d -p 27017:27017 mongo:7.0
 ```
 
-### 📦 Include:
+### Include:
 
 - Installation steps for Docker (if needed)
 - Version numbers for the NoSQL tool and any GUIs
@@ -570,15 +570,16 @@ Through this comprehensive exploration of Neo4j CRUD operations, we have demonst
 ---
 </details>
 ---
-
+---
 <details>
-<summary><strong>🧩 D. Applied Scenario</strong></summary>
 
-## 🧩 Real-Life Scenario: Professional Networking and Recommendations on LinkedIn
+<summary><strong> D. Applied Scenario</strong></summary>
+
+##  Real-Life Scenario: Professional Networking and Recommendations on LinkedIn
 
 ---
 
-### 🔍 Background of the Problem
+###  Background of the Problem
 
 In professional social networks like **LinkedIn**, users seek to:
 
@@ -591,12 +592,12 @@ The platform requires an efficient way to store and query **complex relationship
 
 ---
 
-### 🧠 Why the Graph Data Model Fits
+### Why the Graph Data Model Fits
 
 Graph databases naturally model relationships between entities using **nodes** and **edges**, making them ideal for highly interconnected data.
 
-- 👤 **Nodes**: Users, Companies, Skills, Groups
-- 🔗 **Edges**: Friendships, Employment, Endorsements, Group Memberships
+-  **Nodes**: Users, Companies, Skills, Groups
+-  **Edges**: Friendships, Employment, Endorsements, Group Memberships
 
 **Benefits:**
 
@@ -608,9 +609,9 @@ Graph databases naturally model relationships between entities using **nodes** a
 
 ---
 
-### 📦 Sample Data (Structure and Content)
+### Sample Data (Structure and Content)
 
-#### 🔹 Nodes
+####  Nodes
 
 | Node Type | Attributes                      |
 | --------- | ------------------------------- |
@@ -630,9 +631,9 @@ Graph databases naturally model relationships between entities using **nodes** a
 
 ---
 
-### 🧪 Example Data
+###  Example Data
 
-#### 🧍 Nodes
+####  Nodes
 
 ```json
 User: { "userID": 1, "name": "Wanjiku Mwangi", "headline": "Software Engineer" }
@@ -641,7 +642,7 @@ Skill: { "skillID": 201, "name": "Python" }
 Group: { "groupID": 301, "name": "AI in Africa", "field": "Technology" }
 ```
 
-#### 🔗 Relationships
+####  Relationships
 
 ```plaintext
 Wanjiku —CONNECTED_TO→ Otieno
@@ -652,7 +653,7 @@ Achieng —MEMBER_OF→ AI in Africa
 
 ---
 
-### 🔎 Example Queries with Output
+###  Example Queries with Output
 
 #### 1. Find friends of a user (2nd-degree connections):
 
@@ -723,7 +724,7 @@ RETURN group.name AS Groups
 ---
 
 <details>
-<summary><strong>💻 E. Code & Commands</strong></summary>
+<summary><strong> E. Code & Commands</strong></summary>
 
 All commands used must be:
 
@@ -743,7 +744,7 @@ Add comments above each command explaining its role.
 ---
 
 <details>
-<summary><strong>🖼️ F. Visuals and Output</strong></summary>
+<summary><strong>F. Visuals and Output</strong></summary>
 
 Screenshots are required for:
 
@@ -765,7 +766,7 @@ Organize visuals in an `images/` folder.
 ---
 
 <details>
-<summary><strong>🧪 G. Clarity & Reproducibility</strong></summary>
+<summary><strong> G. Clarity & Reproducibility</strong></summary>
 
 Ensure:
 
@@ -774,14 +775,14 @@ Ensure:
 - All external dependencies are listed
 - Version numbers are locked
 
-> 🧼 Bonus Tip: Test the full setup on a new machine or VM.
+>  Bonus Tip: Test the full setup on a new machine or VM.
 
 </details>
 
 ---
 
 <details>
-<summary><strong>🧑‍🤝‍🧑 H. Collaboration Summary</strong></summary>
+<summary><strong> H. Collaboration Summary</strong></summary>
 
 | Member Name | Main Contribution                            | Detailed Responsibilities                                                                                                                                                                                                                                                                                                                                                                  |
 | ----------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -789,26 +790,25 @@ Ensure:
 | Brian       | CRUD operations implementation and scripting | 1. Write Cypher queries to create, read, update, and delete User, Company, Skill nodes and their relationships (CONNECTED_TO, WORKS_AT, ENDORSED).<br>2. Test each CRUD operation with the sample dataset.<br>3. Annotate queries with comments for clarity.<br>4. Work closely withJoel to ensure queries align with dataset structure.                                                   |
 | Aicha       | Scenario design and screenshots collection   | 1. Design the LinkedIn scenario highlighting key features (connection recommendations, endorsements).<br>2. Draft clear, beginner-friendly explanations.<br>3. Collect screenshots of query results and database outputs.<br>4. Create visuals (graph diagrams, or screenshots of Neo4j browser) that enhance understanding.<br>5. Organize scenario walkthrough logically.                |
 | Joel        | Dataset creation and query optimization      | 1. Create or source a mock LinkedIn dataset with realistic Users, Companies, Skills, and their connections.<br>2. Format data for easy Neo4j import (CSV/JSON).<br>3. Collaborate with Brian to align dataset structure with CRUD queries.<br>4. Optimize query performance by suggesting indexes or refactoring.<br>5. Test dataset with team and verify all lab operations run smoothly. |
-
                                                                                                                                                                    |
 
 </details>
 
 ---
 
-## 📁 Supporting Files
+##  Supporting Files
 
 Make sure your GitHub repo includes:
 
-- 🐳 `docker-compose.yml` (optional)
-- 📂 `datasets/` folder (JSON, CSV, etc.)
-- 🖼️ `images/` folder (for screenshots)
-- 🧾 `scripts/` folder (for helper scripts)
-- 📄 `README.md` (this guide!)
+-`docker-compose.yml` (optional)
+-`datasets/` folder (JSON, CSV, etc.)
+- `images/` folder (for screenshots)
+-`scripts/` folder (for helper scripts)
+-`README.md` (this guide!)
 
 ---
 
-## ✅ Final Submission Checklist
+## Final Submission Checklist
 
 | Task                             | Status |
 | -------------------------------- | ------ |
