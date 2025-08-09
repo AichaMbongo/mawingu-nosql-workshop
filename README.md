@@ -570,6 +570,8 @@ Through this comprehensive exploration of Neo4j CRUD operations, we have demonst
 
 </details>
 
+---
+
 <details>
 <summary><strong> D. Applied Scenario</strong></summary>
 
