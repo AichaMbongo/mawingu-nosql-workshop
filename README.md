@@ -568,7 +568,7 @@ Through the Neo4j CRUD operations, we have demonstrated:
 >*We have successfully configured the Professional network graph database is to handle complex queries, evolve with changing requirements, and uncover valuable networking insights that drive career opportunities and business growth.*
 
 </details>
----
+
 <details>
 
 <summary><strong> D. Applied Scenario</strong></summary>
