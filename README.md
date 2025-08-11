@@ -92,7 +92,7 @@ Use Docker for consistency and reproducibility.
 - Install [cypher-shell](https://neo4j.com/docs/cypher-shell/current/)
 - Connect with:
   ```sh
-  cypher-shell -u neo4j -p 5trathm0re -a bolt://localhost:7687
+  cypher-shell -u neo4j -p linkedin123 -a bolt://localhost:7687
   ```
 
 # Option 2: Neo4j Docker Setup with PowerShell CLI
