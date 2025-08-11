@@ -29,9 +29,6 @@ Briefly introduce your chosen NoSQL data model. Include:
 
 Use Docker for consistency and reproducibility.
 
-<<<<<<< Updated upstream
-### ✅ Example (MongoDB):
-=======
 ## Prerequisites
 - [Docker](https://docs.docker.com/get-docker/) installed on your machine
 
@@ -103,14 +100,9 @@ Execute the following Docker command to create and start a Neo4j container:
 ```powershell
 
 docker run -d --name neo4j-linkedin -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=none neo4j:latest
->>>>>>> Stashed changes
 
 ```
 
-<<<<<<< Updated upstream
-### 📦 Include:
-=======
->>>>>>> Stashed changes
 
 
 #### Command Breakdown
