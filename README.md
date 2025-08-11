@@ -66,6 +66,90 @@ Use Docker for consistency and reproducibility.
 ## Prerequisites
 - [Docker](https://docs.docker.com/get-docker/) installed on your machine
 
+## Setting Up & Running Docker. 
+
+## Step 1: Install Docker Extension and Login
+
+Let's start by adding Docker support to VS Code. Install the [Docker extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) from the marketplace.
+
+![](https://www.placeholder-image.png)
+
+Now open Git Bash in VS Code and let's login to Docker:
+
+```bash
+docker login
+```
+
+Press Enter and complete the login process in your browser.
+
+![](https://www.placeholder-image.png)
+
+## Step 2: Understanding Images vs Containers
+
+Before we proceed, let's clarify what we're working with:
+- **Docker Images**: Think of these as blueprints or templates
+- **Docker Containers**: These are running instances of images
+
+Make sure Docker Desktop is running in the background before continuing.
+
+## Step 3: Check Your Docker Environment
+
+Let's see what's currently in your Docker setup. Run these commands:
+
+```bash
+# List all images
+docker images
+```
+
+```bash
+# List running containers
+docker ps
+```
+
+You'll likely see empty results since we haven't created anything yet.
+
+![](https://www.placeholder-image.png)
+
+## Step 4: Start Your Container Using Docker Compose
+
+Since we already have our `docker-compose.yml` file ready, we can bring up our Neo4j container directly from it.  
+Navigate to your project directory and run:
+
+```bash
+# Start the container in detached mode
+docker compose up -d
+```
+
+```bash
+# Run the container in detached mode
+docker run -d neo4j-linkedin
+```
+
+The `-d` flag runs the container in the background, keeping your terminal free.
+
+![](https://www.placeholder-image.png)
+
+## Step 5: Verify Everything is Running
+
+Let's check if our container is running properly:
+
+```bash
+docker ps
+```
+
+You should now see your container running with a randomly assigned name and container ID.
+
+![](https://www.placeholder-image.png)
+
+You can also verify this in Docker Desktop GUI:
+
+![](https://www.placeholder-image.png)
+
+Your Docker environment is now ready for the lab exercise ahead.
+
+### Setting Up Neo4j
+
+
 ## Option 1: Install and Run Neo4j with Docker
 
 1. Ensure Docker is running.
