@@ -646,17 +646,152 @@ Through this comprehensive exploration of Neo4j CRUD operations, we have demonst
 
 ---
 
+<details>
+<summary><strong> E. Advanced Queries and Analysis</strong></summary>
+# Advanced Queries and Analysis
+
+## Graph Algorithms and Insights
+
+### 1. Shortest Path Between Users
+
+Find shortest path between two users in the network.
+
+```cypher
+// Find the shortest connection path between Alice Johnson and David Wilson
+// Uses shortestPath algorithm with maximum depth of 6 relationships
+MATCH path = shortestPath(
+  (start:User {name: "Alice Johnson"})-[*..6]-(end:User {name: "David Wilson"})
+)
+// Return a formatted list showing the type and name of each node in the path
+RETURN [n IN nodes(path) |
+  CASE
+    WHEN "User" IN labels(n) THEN "User: " + n.name
+    WHEN "Company" IN labels(n) THEN "Company: " + n.name
+    ELSE n.name
+  END
+] AS ConnectionPath;
+```
+
+**Result:**
+| ConnectionPath |
+|----------------|
+| ["User: Alice Johnson", "User: Bob Smith", "User: David Wilson"] |
+
+---
+
+### 2. Community Detection (Companies as Communities)
+
+Find tight-knit professional communities by analyzing internal company connections.
+
+#### Setup Data
+
+```cypher
+// Add Carol Davis so the query works
+// Create a new user to demonstrate community detection
+CREATE (carol:User {
+    name: "Carol Davis",
+    email: "carol.davis@email.com",
+    title: "Project Manager",
+    location: "San Francisco, CA",
+    experience_years: 7,
+    created_at: datetime()
+});
+
+// Give Carol a job at TechCorp (same as Alice Johnson)
+// This creates internal company connections for community analysis
+MATCH (carol:User {name: "Carol Davis"}), (tech_corp:Company {name: "TechCorp Inc"})
+CREATE (carol)-[:WORKS_AT {
+    position: "Project Manager",
+    start_date: date("2021-05-01"),
+    department: "Management"
+}]->(tech_corp);
+```
+
+#### Community Analysis Query
+
+```cypher
+// Find internal connections within companies to measure community cohesion
+// Step 1: Count connections between users who work at the same company
+MATCH (u1:User)-[:WORKS_AT]->(c:Company)<-[:WORKS_AT]-(u2:User)
+WHERE u1 <> u2
+WITH c, COUNT(*) AS InternalConnections
+// Step 2: Count total employees at each company
+MATCH (c)<-[:WORKS_AT]-(u:User)
+WITH c, InternalConnections, COUNT(u) AS TotalEmployees
+// Step 3: Calculate cohesion percentage (actual connections vs. possible connections)
+RETURN c.name AS Company,
+       TotalEmployees,
+       InternalConnections,
+       ROUND(100.0 * TOFLOAT(InternalConnections) / (TotalEmployees * (TotalEmployees - 1))) AS CohesionPercentage
+ORDER BY CohesionPercentage DESC;
+```
+
+**Result:**
+| Company | TotalEmployees | InternalConnections | CohesionPercentage |
+|---------|----------------|--------------------|--------------------|
+| "TechCorp Inc" | 3 | 6 | 100.0 |
+
+---
+
+### 3. Skills Gap Analysis
+
+Find skills that are in demand but underrepresented by analyzing skill holders and endorsements.
+
+```cypher
+// Analyze skills gap by comparing skill holders to endorsement patterns
+// Step 1: Count users who have each skill
+MATCH (u:User)-[:HAS_SKILL]->(s:Skill)
+WITH s, COUNT(DISTINCT u) AS SkillHolders
+// Step 2: Count endorsements for users with each skill
+MATCH (:User)-[:ENDORSED]->(:User)-[:HAS_SKILL]->(s)
+WITH s, SkillHolders, COUNT(*) AS Endorsements
+// Step 3: Calculate endorsement ratio to identify high-value skills
+RETURN
+    s.name AS Skill,
+    s.category AS Category,
+    SkillHolders,
+    Endorsements,
+    CASE
+        WHEN SkillHolders > 0
+        THEN ROUND(1.0 * Endorsements / SkillHolders, 2)
+        ELSE 0
+    END AS EndorsementRatio
+ORDER BY EndorsementRatio DESC;
+```
+
+**Result:**
+| Skill | Category | SkillHolders | Endorsements | EndorsementRatio |
+|-------|----------|--------------|--------------|------------------|
+| "Python" | "Programming" | 1 | 1 | 1.0 |
+| "Project Management" | "Management" | 1 | 1 | 1.0 |
+
+---
+
+## Query Insights
+
+### Shortest Path Analysis
+- **Purpose**: Identifies connection pathways between users
+- **Use Case**: Understanding how information or opportunities might flow through the network
+- **Key Metric**: Path length (number of hops between users)
+
+### Community Detection
+- **Purpose**: Measures internal cohesion within organizations
+- **Use Case**: Identifying well-connected teams or departments
+- **Key Metric**: Cohesion percentage (internal connections relative to possible connections)
+
+### Skills Gap Analysis
+- **Purpose**: Identifies high-value skills with strong endorsement patterns
+- **Use Case**: Talent acquisition and skill development prioritization
+- **Key Metric**: Endorsement ratio (endorsements per skill holder)
 
 
-
-
-
+</details>
 
 
 
 
 <details>
-<summary><strong> H. Collaboration Summary</strong></summary>
+<summary><strong> F. Collaboration Summary</strong></summary>
 
 | Member Name | Main Contribution                            | Detailed Responsibilities                                                                                                                                                                                                                                                                                                                                                                  |
 | ----------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
