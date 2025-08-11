@@ -1,30 +1,63 @@
-# Hands-On Lab: [Title, e.g., "Product Catalog with MongoDB" or "Social Network with Neo4j"]
+# Building a Professional Networking Graph with Neo4j: A LinkedIn-Inspired Hands-On Lab
 
 **Unit Code:** MIT 8107  
 **Course:** Advanced Database Systems  
 **Date:** 30th July 2025  
 **Group Members:**
 
-- Aicha Mbongo
-- Joel Mutevu
-- Brian Githenya
-- Alan
+- 134141- Aicha Mbongo
+- 122173- Joel Mutevu
+- 224607- Brian Githenya
+- 101191- Allan Bett
 
 ---
 
 <details>
-<summary><strong>A. Introduction</strong></summary>
+<summary><strong>Introduction</strong></summary>
 
-Briefly introduce your chosen NoSQL data model. Include:
+## Introduction
 
-- What it is
-- Why you chose it
-- Its advantages over other models
+In today’s interconnected professional world, platforms like LinkedIn have transformed how individuals network, explore career opportunities, and share expertise. Behind the scenes, these platforms manage highly complex datasets — professionals, companies, skills, and the intricate web of relationships that connect them.  
+
+Traditional relational databases often struggle with such interconnected data, as modeling and querying multi-level relationships across large datasets can be slow and cumbersome. This is where **graph databases** like **Neo4j** excel. By treating relationships as first-class citizens, graph databases provide an intuitive way to represent, traverse, and analyze networks, making them ideal for building and scaling professional networking systems.  
+
+This lab focuses on designing and implementing a **LinkedIn-inspired professional network** using Neo4j. Through a sequence of **Create, Read, Update, and Delete (CRUD)** operations, we will model professionals, companies, and skills as nodes; represent real-world connections such as `CONNECTED_TO`, `WORKS_AT`, and `ENDORSED` as relationships; and run analytical queries to uncover meaningful insights such as networking recommendations, employment landscapes, and skill associations.  
+
+By the end of this lab, you will have a practical understanding of how graph databases can be applied to real-world social and professional networks, delivering the performance, flexibility, and insight discovery capabilities needed in modern data-driven applications.
+
+
 
 </details>
 
 ---
 
+<details>
+<summary><strong>A. Lab Objectives</strong></summary>
+
+By completing this lab, you will be able to:  
+
+1. **Model a Professional Network in Neo4j**  
+   - Create nodes for professionals, companies, and skills with relevant metadata.  
+   - Establish meaningful relationships between these nodes.  
+
+2. **Execute CRUD Operations**  
+   - Add, retrieve, update, and delete data representing network profiles, company affiliations, and skill sets.  
+
+3. **Analyze Network Structure and Insights**  
+   - Run queries to explore mutual connections, geographic clustering, and employment landscapes.  
+   - Generate networking recommendations based on shared connections.  
+
+4. **Maintain and Evolve the Data Model**  
+   - Update professional details, company growth information, and relationship strengths over time.  
+   - Identify and remove outdated or irrelevant connections.  
+
+5. **Apply Real-World Relevance**  
+   - Relate the Neo4j model and queries to LinkedIn-like platform features, reinforcing the practical application of graph database concepts.  
+
+
+</details>
+
+---
 <details>
 <summary><strong>B. Setup Instructions</strong></summary>
 
@@ -45,27 +78,68 @@ docker run --name mongodb -d -p 27017:27017 mongo:7.0
 </details>
 
 ---
+<details>
+<summary><strong> C. Real-World Use Case</strong></summary>
+
+### (i) LinkedIn Scenario
+
+---
+
+
+In professional networking platforms like LinkedIn, users want to:
+
+- Connect with other professionals  
+- Discover new people through mutual connections  
+- Explore companies, industries, and team structures  
+- View and validate each other’s skills through endorsements  
+- Receive networking recommendations  
+
+**Challenge:**  
+Traditional **relational databases** struggle to efficiently **model and query complex, interconnected relationships** between people, companies, and skills.
+
+---
+
+**Why Neo4j Graph Database Fits**  
+- Stores **professionals, companies, and skills** as **nodes**  
+- Stores **relationships** (`CONNECTED_TO`, `WORKS_AT`, `ENDORSED`) as **first-class entities**  
+- Enables **fast network traversal** and **pattern discovery** for features like recommendations and endorsements
+
+---
+
+### (ii) How the Graph Database Models and Solves This Problem
+
+| Step | Task                          | Example                                                    | Notes                                                                                   |
+|-------|-------------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| 1     | Create Professional Profiles  | Alice Johnson – *Software Engineer*, San Francisco, 5 yrs  | Nodes store metadata (title, location, experience). Created via Cypher `CREATE`.         |
+| 2     | Add Company Nodes             | Alice → TechCorp Inc (*Senior Software Engineer*, Engineering) | Enables exploring company structure and industry details.                               |
+| 3     | Add Skill Nodes & Links       | Python, Java, Machine Learning, UI Design, Docker          | Skills linked to professionals; supports endorsements.                                 |
+| 4     | Connect Professionals         | Alice ↔ Bob Smith (*Strong*, 15 mutual connections)        | Relationships store strength, mutual connection count, and connection date.             |
+| 5     | Run Queries for Insights      | - Networking recommendations<br>- Geographic clustering<br>- Employment landscape<br>- Connection analysis | Graph traversal queries extract targeted insights.                                     |
+| 6     | Update & Maintain the Network | - Update profiles & companies<br>- Strengthen ties<br>- Remove outdated links | Reflects real-time changes in careers, companies, and relationships.                   |
+
+---
+
+### Result: Advantages of This Graph Model
+
+| Database Capability           | Description                                                                              |
+|------------------------------|------------------------------------------------------------------------------------------|
+| Instant Recommendations      | Finds relevant new professional connections via mutual contacts graph traversal.         |
+| Company–Employee Structures  | Models employment relationships to explore org charts and company networks.             |
+| Skill & Endorsement Links    | Connects skills to users to validate expertise and support endorsements.                 |
+| Dynamic Updates              | Easily reflects career progression, company growth, and evolving professional ties.      |
+
+---
+
+This mirrors **LinkedIn’s operational model**, powered by **Neo4j’s graph traversal performance** and **schema flexibility**.
+
+</details>
+
+---
 
 <details>
 <summary>
-<strong> Neo4j Graph Database CRUD Operations</strong>
+<strong> D. Neo4j Graph Database CRUD Operations</strong>
 </summary>
-
-
-
-## LinkedIn Professional Network 
-
-### Understanding Graph Database
-
-Graph databases revolutionize how we model and query connected data. Unlike traditional relational databases that struggle with complex relationships, Neo4j excels at representing real-world connections naturally. In our LinkedIn-inspired professional network, we'll explore how nodes (professionals, companies, skills) connect through meaningful relationships (connections, employment, endorsements).
-
-**Why Graph Databases Matter:**
-- **Natural Modeling**: Relationships are first-class citizens, not foreign key afterthoughts
-- **Performance**: Traversing connections is blazingly fast, regardless of data size  
-- **Flexibility**: Schema-optional design adapts as your network evolves
-- **Pattern Discovery**: Uncover hidden connections and insights through sophisticated queries
-
----
 
 ## Data Model Architecture
 
@@ -558,228 +632,28 @@ You will see  “Started streaming 1 records after 15 ms and completed after 30 
 
 ## Key Takeaways
 
-Through the Neo4j CRUD operations, we have demonstrated:
+Through this comprehensive exploration of Neo4j CRUD operations, we have demonstrated:
 
 - **Schema Flexibility**: Dynamic property addition without database migrations
 - **Relationship-First Design**: Natural modeling of complex professional networks
 - **Query Performance**: Efficient traversal of connected data at scale
 - **Pattern Recognition**: Discovery of hidden insights through graph algorithms
 
->*We have successfully configured the Professional network graph database is to handle complex queries, evolve with changing requirements, and uncover valuable networking insights that drive career opportunities and business growth.*
+>*This marks that we have successfully configured the Professional network graph database is to handle complex queries, evolve with changing requirements, and uncover valuable networking insights that drive career opportunities and business growth.*
+
 
 </details>
 
 ---
 
-<details>
 
-<summary><strong> D. Applied Scenario</strong></summary>
 
-##  Real-Life Scenario: Professional Networking and Recommendations on LinkedIn
 
----
 
-###  Background of the Problem
 
-In professional social networks like **LinkedIn**, users seek to:
 
-- Connect with other professionals
-- Find job opportunities
-- Endorse skills
-- Join relevant groups
 
-The platform requires an efficient way to store and query **complex relationships**—like user connections, employment history, skill endorsements, and group memberships—to provide personalized recommendations and insights.
 
----
-
-### Why the Graph Data Model Fits
-
-Graph databases naturally model relationships between entities using **nodes** and **edges**, making them ideal for highly interconnected data.
-
--  **Nodes**: Users, Companies, Skills, Groups
--  **Edges**: Friendships, Employment, Endorsements, Group Memberships
-
-**Benefits:**
-
-- Easy traversal for “friends of friends” queries
-- Efficient skill matching and community detection
-- Superior performance in recursive and join-like queries
-
-> Unlike relational databases, graph databases **excel at relationship traversal** and perform better for deeply nested queries.
-
----
-
-### Sample Data (Structure and Content)
-
-####  Nodes
-
-| Node Type | Attributes                      |
-| --------- | ------------------------------- |
-| User      | `userID`, `name`, `headline`    |
-| Company   | `companyID`, `name`, `industry` |
-| Skill     | `skillID`, `name`               |
-| Group     | `groupID`, `name`, `field`      |
-
-#### 🔸 Relationships
-
-| Relationship Type | Description                           |
-| ----------------- | ------------------------------------- |
-| `CONNECTED_TO`    | User ↔ User (Professional connection) |
-| `WORKS_AT`        | User → Company                        |
-| `ENDORSED`        | User → Skill                          |
-| `MEMBER_OF`       | User → Group                          |
-
----
-
-###  Example Data
-
-####  Nodes
-
-```json
-User: { "userID": 1, "name": "Wanjiku Mwangi", "headline": "Software Engineer" }
-Company: { "companyID": 101, "name": "Nairobi Tech Hub", "industry": "Software" }
-Skill: { "skillID": 201, "name": "Python" }
-Group: { "groupID": 301, "name": "AI in Africa", "field": "Technology" }
-```
-
-####  Relationships
-
-```plaintext
-Wanjiku —CONNECTED_TO→ Otieno
-Wanjiku —WORKS_AT→ Nairobi Tech Hub
-Otieno —ENDORSED→ Python
-Achieng —MEMBER_OF→ AI in Africa
-```
-
----
-
-###  Example Queries with Output
-
-#### 1. Find friends of a user (2nd-degree connections):
-
-```cypher
-MATCH (user:User {name: "Wanjiku Mwangi"})-[:CONNECTED_TO]->(:User)-[:CONNECTED_TO]->(fof)
-WHERE NOT (user)-[:CONNECTED_TO]->(fof) AND user <> fof
-RETURN DISTINCT fof.name AS RecommendedConnections
-```
-
-**Output:**
-
-| RecommendedConnections |
-| ---------------------- |
-| Brian Kiptoo           |
-| Aisha Mohamed          |
-
----
-
-#### 2. List skills endorsed for a user:
-
-```cypher
-MATCH (user:User {name: "Otieno Ouma"})-[:ENDORSED]->(skill)
-RETURN skill.name AS Skills
-```
-
-**Output:**
-
-| Skills |
-| ------ |
-| Python |
-| Java   |
-
----
-
-#### 3. Find users who work at the same company:
-
-```cypher
-MATCH (u1:User)-[:WORKS_AT]->(company {name: "Nairobi Tech Hub"})<-[:WORKS_AT]-(u2:User)
-WHERE u1.name = "Wanjiku Mwangi" AND u1 <> u2
-RETURN u2.name AS Colleagues
-```
-
-**Output:**
-
-| Colleagues    |
-| ------------- |
-| Achieng Njeri |
-
----
-
-#### 4. Find communities (groups) a user is a member of:
-
-```cypher
-MATCH (user:User {name: "Achieng Njeri"})-[:MEMBER_OF]->(group)
-RETURN group.name AS Groups
-```
-
-**Output:**
-
-| Groups       |
-| ------------ |
-| AI in Africa |
-
----
-
-</details>
-
----
-
-<details>
-<summary><strong> E. Code & Commands</strong></summary>
-
-All commands used must be:
-
-- Clearly annotated
-- Grouped by function (setup, insert, read, etc.)
-- Tested and verified
-
-```bash
-# Example: Create a collection
-db.createCollection("products")
-```
-
-Add comments above each command explaining its role.
-
-</details>
-
----
-
-<details>
-<summary><strong>F. Visuals and Output</strong></summary>
-
-Screenshots are required for:
-
-- Docker container running
-- Terminal/CLI or GUI in action
-- Before/after of CRUD operations
-- UI dashboards (if any, like Neo4j browser, Mongo Express)
-
-Embed images like this:
-
-```markdown
-![MongoDB running in Docker](images/mongo-docker.png)
-```
-
-Organize visuals in an `images/` folder.
-
-</details>
-
----
-
-<details>
-<summary><strong> G. Clarity & Reproducibility</strong></summary>
-
-Ensure:
-
-- Steps can be followed from scratch
-- No assumptions are made about prior setup
-- All external dependencies are listed
-- Version numbers are locked
-
->  Bonus Tip: Test the full setup on a new machine or VM.
-
-</details>
-
----
 
 <details>
 <summary><strong> H. Collaboration Summary</strong></summary>
@@ -796,17 +670,7 @@ Ensure:
 
 ---
 
-##  Supporting Files
 
-Make sure your GitHub repo includes:
-
--`docker-compose.yml` (optional)
--`datasets/` folder (JSON, CSV, etc.)
-- `images/` folder (for screenshots)
--`scripts/` folder (for helper scripts)
--`README.md` (this guide!)
-
----
 
 ## Final Submission Checklist
 
