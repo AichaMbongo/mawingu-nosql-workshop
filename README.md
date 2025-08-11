@@ -343,7 +343,205 @@ For further help, consult the [Neo4j Docker documentation](https://neo4j.com/doc
 ---
 <details>
 <summary><strong> C. Real-World Use Case</strong></summary>
+## Scenario 1: Connection Recommendations
 
+**Objective**: Find connection suggestions for Alice based on mutual contacts.
+
+### Query
+```cypher
+-- Find Alice's connections and their connections (2-hop path)
+MATCH (alice:User {name: "Alice Johnson"})-[:CONNECTED_TO]-(mutual:User)-[:CONNECTED_TO]-(suggestion:User)
+-- Exclude direct connections and self-references
+WHERE NOT (alice)-[:CONNECTED_TO]-(suggestion)
+  AND alice <> suggestion
+-- Return suggested connections with their details
+RETURN suggestion.name AS Suggestion,
+       suggestion.title AS Title,
+       suggestion.location AS Location,
+       COUNT(DISTINCT mutual) AS MutualConnections  -- Count unique mutual connections
+-- Prioritize suggestions with most mutual connections
+ORDER BY MutualConnections DESC
+LIMIT 5;  -- Return top 5 recommendations
+```
+
+### Query Breakdown
+- **MATCH**: Finds users connected to Alice through mutual connections
+- **WHERE**: Excludes direct connections and self-references
+- **RETURN**: Shows suggested connections with their professional details
+- **ORDER BY**: Prioritizes suggestions with more mutual connections
+- **LIMIT**: Returns top 5 recommendations
+
+### Results
+| Suggestion     | Title             | Location            | MutualConnections |
+|----------------|-------------------|---------------------|-------------------|
+| "Emma Brown"   | "DevOps Engineer" | "San Francisco, CA" | 1                 |
+| "David Wilson" | "UX Designer"     | "Austin, TX"        | 1                 |
+
+**Business Value**: Helps users discover relevant professional connections through their existing network, improving networking efficiency.
+
+---
+
+## Scenario 2: Skill Endorsement Analysis
+
+**Objective**: Identify the most endorsed skills in the network to understand trending competencies.
+
+### Query
+```cypher
+-- Match endorsements linked to skills through HAS_SKILL relationship
+MATCH ()-[e:ENDORSED]->()-[h:HAS_SKILL]->(s:Skill)
+-- Aggregate endorsement counts by skill
+RETURN s.name AS Skill,
+       s.category AS Category,
+       COUNT(e) AS Endorsements  -- Count total endorsements per skill
+-- Rank skills by popularity
+ORDER BY Endorsements DESC
+LIMIT 10;  -- Show top 10 most endorsed skills
+```
+
+### Query Breakdown
+- **MATCH**: Traces endorsement relationships to skills
+- **COUNT(e)**: Aggregates total endorsements per skill
+- **ORDER BY**: Ranks skills by endorsement popularity
+
+### Results
+| Skill                | Category      | Endorsements |
+|---------------------|---------------|--------------|
+| "Python"             | "Programming" | 1            |
+| "Project Management" | "Management"  | 1            |
+
+**Business Value**: Reveals in-demand skills for career planning and recruitment strategies.
+
+---
+
+## Scenario 3: Career Path Analysis
+
+**Objective**: Analyze career progression patterns across different industries.
+
+### Query
+```cypher
+-- Connect users to their companies
+MATCH (u:User)-[:WORKS_AT]->(c:Company)
+-- Calculate industry statistics
+RETURN
+    c.industry AS Industry,
+    AVG(u.experience_years) AS AvgExperience,  -- Average years of experience per industry
+    COUNT(u) AS ProfessionalCount              -- Total professionals per industry
+-- Order by industry size (most professionals first)
+ORDER BY ProfessionalCount DESC;
+```
+
+### Query Breakdown
+- **MATCH**: Connects users to their companies
+- **AVG()**: Calculates average experience per industry
+- **COUNT()**: Shows professional distribution across industries
+
+### Results
+| Industry     | AvgExperience | ProfessionalCount |
+|-------------|---------------|-------------------|
+| "Technology" | 6.0           | 1                 |
+| "Analytics"  | 3.0           | 1                 |
+| "Design"     | 4.0           | 1                 |
+
+**Business Value**: Provides insights for career planning and industry analysis.
+
+---
+
+## Scenario 4: Company Talent Pool Analysis
+
+**Objective**: Analyze talent distribution and role diversity across companies.
+
+### Basic Query
+```cypher
+-- Connect users to their companies
+MATCH (u:User)-[:WORKS_AT]->(c:Company)
+-- Aggregate employee data by company
+WITH c, COLLECT(u.title) AS Roles, COUNT(u) AS EmployeeCount
+-- Return company talent pool analysis
+RETURN
+    c.name AS Company,
+    c.industry AS Industry,
+    EmployeeCount,                    -- Total number of employees
+    Roles                            -- Array of all employee titles
+-- Order by company size
+ORDER BY EmployeeCount DESC;
+```
+
+### Enhanced Query (Unique Roles)
+For unique roles instead of duplicates, modify the collection:
+```cypher
+-- Connect users to their companies
+MATCH (u:User)-[:WORKS_AT]->(c:Company)
+-- Aggregate unique employee roles by company
+WITH c, COLLECT(DISTINCT u.title) AS Roles, COUNT(u) AS EmployeeCount
+-- Return company talent pool analysis with unique roles
+RETURN
+    c.name AS Company,
+    c.industry AS Industry,
+    EmployeeCount,                    -- Total number of employees
+    Roles                            -- Array of unique employee titles
+-- Order by company size
+ORDER BY EmployeeCount DESC;
+```
+
+### Query Breakdown
+- **WITH**: Intermediate processing to aggregate roles
+- **COLLECT()**: Groups all employee titles per company
+- **COUNT()**: Calculates total employees per company
+
+### Results
+| Company                  | Industry     | EmployeeCount | Roles                        |
+|-------------------------|--------------|---------------|------------------------------|
+| "TechCorp Inc"           | "Technology" | 1             | ["Senior Software Engineer"] |
+| "Data Solutions LLC"     | "Analytics"  | 1             | ["Data Scientist"]           |
+| "Creative Design Studio" | "Design"     | 1             | ["UX Designer"]              |
+
+**Business Value**: Helps in competitive analysis and talent acquisition strategies.
+
+---
+
+## Scenario 5: Network Influence Score
+
+**Objective**: Calculate network influence based on connections and endorsements to identify key network nodes.
+
+### Query
+```cypher
+-- Start with all users
+MATCH (u:User)
+-- Count connections for each user (optional to handle users with no connections)
+OPTIONAL MATCH (u)-[c:CONNECTED_TO]-(other:User)
+WITH u, COUNT(DISTINCT other) as Connections  -- Count unique connections per user
+-- Count endorsements received by each user
+OPTIONAL MATCH (u)<-[e:ENDORSED]-()
+WITH u, Connections, COUNT(e) as Endorsements  -- Count total endorsements received
+-- Calculate influence score using weighted formula
+RETURN u.name as Name,
+       u.title as Title,
+       Connections,                              -- Total network connections
+       Endorsements,                             -- Total endorsements received
+       (Connections * 2 + Endorsements * 3) as InfluenceScore  -- Weighted influence calculation
+-- Rank users by influence score
+ORDER BY InfluenceScore DESC;
+```
+
+### Query Breakdown
+- **OPTIONAL MATCH**: Handles users with no connections gracefully
+- **COUNT(DISTINCT other)**: Counts unique connections per user
+- **Influence Formula**: `(Connections × 2) + (Endorsements × 3)`
+  - Connections weighted as 2 points each
+  - Endorsements weighted as 3 points each (higher value for quality validation)
+
+### Results
+| Name            | Title                      | Connections | Endorsements | InfluenceScore |
+|----------------|----------------------------|-------------|--------------|----------------|
+| "Bob Smith"     | "Data Scientist"           | 2           | 1            | 7              |
+| "Alice Johnson" | "Senior Software Engineer" | 2           | 1            | 7              |
+| "Carol Davis"   | "Product Manager"          | 2           | 0            | 4              |
+| "David Wilson"  | "UX Designer"              | 1           | 0            | 2              |
+| "Emma Brown"    | "DevOps Engineer"          | 1           | 0            | 2              |
+
+**Business Value**: Identifies influential network members for targeted outreach, thought leadership, and strategic partnerships.
+
+---
 ### (i) LinkedIn Scenario
 
 ---
