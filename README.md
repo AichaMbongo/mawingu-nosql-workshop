@@ -1119,7 +1119,6 @@ This mirrors **LinkedIn’s operational model**, powered by **Neo4j’s graph tr
 
 <details>
 <summary><strong> E. Advanced Queries and Analysis</strong></summary>
-# Advanced Queries and Analysis
 
 ## Use Case Scenarios
 
