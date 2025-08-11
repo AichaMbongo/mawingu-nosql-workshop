@@ -259,10 +259,6 @@ For further help, consult the [Neo4j Docker documentation](https://neo4j.com/doc
 ---
 <details>
 <summary><strong> C. Real-World Use Case</strong></summary>
-# Neo4j LinkedIn Network Analysis - Use Case Scenarios
-
-This document demonstrates practical use cases for analyzing professional networks using Neo4j graph database. Each scenario includes the Cypher query, explanation, and expected results.
-
 ## Scenario 1: Connection Recommendations
 
 **Objective**: Find connection suggestions for Alice based on mutual contacts.
