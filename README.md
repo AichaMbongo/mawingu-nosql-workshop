@@ -335,7 +335,7 @@ Our professional network consists of three core entities interconnected through 
 - **ENDORSED**: Peer skill validations and recommendations
 
 *Neo4j Browser showing the graph schema visualization*
-![Neo4j Layout](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/GeneralGraphs.jpg)
+![Neo4j Layout](https://s3.amazonaws.com/dev.assets.neo4j.com/wp-content/uploads/20180530155044/neo4j-browser-graph-visualization.png)
 
 ---
 
