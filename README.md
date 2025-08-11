@@ -66,7 +66,7 @@ Use Docker for consistency and reproducibility.
 ## Prerequisites
 - [Docker](https://docs.docker.com/get-docker/) installed on your machine
 
-## 1. Install and Run Neo4j with Docker
+## Option 1: Install and Run Neo4j with Docker
 
 1. Ensure Docker is running.
 2. In the project directory, start Neo4j with:
@@ -79,7 +79,7 @@ Use Docker for consistency and reproducibility.
 - Open your browser and go to [http://localhost:7474](http://localhost:7474)
 - Login with:
   - **Username:** neo4j
-  - **Password:** 5trathm0re
+  - **Password:** linkedin123
 - You should see the Neo4j Browser interface.
 
 ## 3. Connect to Neo4j (CLI/GUI)
