@@ -72,7 +72,7 @@ Use Docker for consistency and reproducibility.
 
 Let's start by adding Docker support to VS Code. Install the [Docker extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) from the marketplace.
 
-![](https://www.placeholder-image.png)
+![Docker CLI LogIn](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/screenshots/DockerMarketPlace.png)
 
 Now open Git Bash in VS Code and let's login to Docker:
 
@@ -82,7 +82,12 @@ docker login
 
 Press Enter and complete the login process in your browser.
 
-![](https://www.placeholder-image.png)
+![DockerLoginBrowser](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/screenshots/DockerLoginBrowser.png)
+
+After that you should see a successful session dialoge
+
+![DockerLoginBrowser](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/screenshots/SuccessfulDockerSetUp.png)
+
 
 ## Step 2: Understanding Images vs Containers
 
@@ -108,7 +113,7 @@ docker ps
 
 You'll likely see empty results since we haven't created anything yet.
 
-![](https://www.placeholder-image.png)
+![Docker Empty Images](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/screenshots/NoImagesYet.png)
 
 ## Step 4: Start Your Container Using Docker Compose
 
@@ -127,7 +132,8 @@ docker run -d neo4j-linkedin
 
 The `-d` flag runs the container in the background, keeping your terminal free.
 
-![](https://www.placeholder-image.png)
+![Docker ComposeuP](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/screenshots/ComposeUp.png)
+
 
 ## Step 5: Verify Everything is Running
 
@@ -139,11 +145,13 @@ docker ps
 
 You should now see your container running with a randomly assigned name and container ID.
 
-![](https://www.placeholder-image.png)
+![Docker Ps CLI](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/screenshots/DockerPs.png)
+
 
 You can also verify this in Docker Desktop GUI:
 
-![](https://www.placeholder-image.png)
+![Docker Image Running GUI](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/screenshots/GUIDockerImageRunning.png)
+
 
 Your Docker environment is now ready for the lab exercise ahead.
 
@@ -165,6 +173,7 @@ Your Docker environment is now ready for the lab exercise ahead.
   - **Username:** neo4j
   - **Password:** linkedin123
 - You should see the Neo4j Browser interface.
+![Neo4Ji Interface](https://raw.githubusercontent.com/AichaMbongo/mawingu-nosql-workshop/refs/heads/main/screenshots/Neo4jBrowser.png)
 
 ## 3. Connect to Neo4j (CLI/GUI)
 
