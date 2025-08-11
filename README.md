@@ -63,17 +63,196 @@ By completing this lab, you will be able to:
 
 Use Docker for consistency and reproducibility.
 
-###Example (MongoDB):
+## Prerequisites
+- [Docker](https://docs.docker.com/get-docker/) installed on your machine
 
-```bash
-docker run --name mongodb -d -p 27017:27017 mongo:7.0
+## 1. Install and Run Neo4j with Docker
+
+1. Ensure Docker is running.
+2. In the project directory, start Neo4j with:
+   ```sh
+   docker-compose up -d
+   ```
+   This uses the configuration in `docker-compose.yml` (Neo4j version 5.15).
+
+## 2. Verify Neo4j Instance
+- Open your browser and go to [http://localhost:7474](http://localhost:7474)
+- Login with:
+  - **Username:** neo4j
+  - **Password:** 5trathm0re
+- You should see the Neo4j Browser interface.
+
+## 3. Connect to Neo4j (CLI/GUI)
+
+### Web GUI (Neo4j Browser)
+- Visit [http://localhost:7474](http://localhost:7474)
+- Use the credentials above.
+
+### CLI (cypher-shell)
+- Install [cypher-shell](https://neo4j.com/docs/cypher-shell/current/)
+- Connect with:
+  ```sh
+  cypher-shell -u neo4j -p 5trathm0re -a bolt://localhost:7687
+  ```
+
+# Option 2: Neo4j Docker Setup with PowerShell CLI
+
+
+
+## Overview
+
+
+
+This guide demonstrates how to set up Neo4j using Docker and connect to it via the Cypher shell using PowerShell CLI. This approach eliminates the need for authentication setup, making it ideal for development and testing environments.
+
+
+
+## Prerequisites
+
+
+
+- Docker installed and running on your system
+
+- PowerShell terminal access
+
+- Internet connection for downloading the Neo4j Docker image
+
+
+
+## Setup Process
+
+
+
+### Step 1: Run Neo4j Container
+
+
+
+Execute the following Docker command to create and start a Neo4j container:
+
+
+
+```powershell
+
+docker run -d --name neo4j-linkedin -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=none neo4j:latest
+
 ```
 
-### Include:
 
-- Installation steps for Docker (if needed)
-- Version numbers for the NoSQL tool and any GUIs
-- Optional: Docker Compose setup
+
+#### Command Breakdown
+
+
+
+- `docker run -d` - Runs the container in detached mode (background)
+
+- `--name neo4j-linkedin` - Assigns a custom name to the container
+
+- `-p 7474:7474` - Maps port 7474 for Neo4j Browser interface
+
+- `-p 7687:7687` - Maps port 7687 for Bolt protocol connections
+
+- `-e NEO4J_AUTH=none` - Disables authentication for easier development access
+
+- `neo4j:latest` - Uses the latest Neo4j Docker image
+
+
+
+### Step 2: Connect to Cypher Shell
+
+
+
+Once the container is running, connect to the interactive Cypher shell:
+
+
+
+```powershell
+
+docker exec -it neo4j-linkedin cypher-shell
+
+```
+
+
+
+#### Command Breakdown
+
+
+
+- `docker exec -it` - Executes an interactive command in the running container
+
+- `neo4j-linkedin` - The name of our Neo4j container
+
+- `cypher-shell` - The Neo4j command-line interface for executing Cypher queries
+
+
+
+## Expected Output
+
+
+
+### Docker Run Output
+
+```
+
+Unable to find image 'neo4j:latest' locally
+
+latest: Pulling from library/neo4j
+
+4f4fb700ef54: Pull complete
+
+9f509846040c: Pull complete
+
+605e668a097d: Pull complete
+
+1337db2d4a82: Pull complete
+
+ccaf924377f9: Pull complete
+
+a21899da51b5: Pull complete
+
+```
+
+
+
+### Cypher Shell Connection
+
+```
+
+Connected to Neo4j using Bolt protocol version 5.8 at neo4j://localhost:7687.
+
+Type :help for a list of available commands or :exit
+
+neo4j@neo4j>
+
+```
+
+
+
+## 4. Troubleshooting
+- **Port in use:** Make sure ports 7474 and 7687 are free or change them in `docker-compose.yml`.
+- **Docker not running:** Start Docker Desktop or your Docker service.
+- **Password issues:** To reset, stop containers, delete the `neo4j_data` volume, and restart:
+  ```sh
+  docker-compose down -v
+  docker-compose up -d
+  ```
+- **Data persistence:** Data is stored in Docker volumes (`neo4j_data`).
+
+## 5. Environment Management
+- **Start Neo4j:**
+  ```sh
+  docker-compose up -d
+  ```
+- **Stop Neo4j:**
+  ```sh
+  docker-compose down
+  ```
+- **Remove all data:**
+  ```sh
+  docker-compose down -v
+  ```
+
+---
+For further help, consult the [Neo4j Docker documentation](https://neo4j.com/docs/operations-manual/current/installation/docker/).
 
 </details>
 
