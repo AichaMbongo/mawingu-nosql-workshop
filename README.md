@@ -350,10 +350,68 @@ For further help, consult the [Neo4j Docker documentation](https://neo4j.com/doc
 </details>
 
 ---
+<details>
+<summary><strong> C The LinkedIn Use Case</strong></summary>
+
+### (i) LinkedIn Scenario
+
+---
+
+
+In professional networking platforms like LinkedIn, users want to:
+
+- Connect with other professionals  
+- Discover new people through mutual connections  
+- Explore companies, industries, and team structures  
+- View and validate each other’s skills through endorsements  
+- Receive networking recommendations  
+
+**Challenge:**  
+Traditional **relational databases** struggle to efficiently **model and query complex, interconnected relationships** between people, companies, and skills.
+
+---
+
+**Why Neo4j Graph Database Fits**  
+- Stores **professionals, companies, and skills** as **nodes**  
+- Stores **relationships** (`CONNECTED_TO`, `WORKS_AT`, `ENDORSED`) as **first-class entities**  
+- Enables **fast network traversal** and **pattern discovery** for features like recommendations and endorsements
+
+---
+
+### (ii) How the Graph Database Models and Solves This Problem
+
+| Step | Task                          | Example                                                    | Notes                                                                                   |
+|-------|-------------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| 1     | Create Professional Profiles  | Alice Johnson – *Software Engineer*, San Francisco, 5 yrs  | Nodes store metadata (title, location, experience). Created via Cypher `CREATE`.         |
+| 2     | Add Company Nodes             | Alice → TechCorp Inc (*Senior Software Engineer*, Engineering) | Enables exploring company structure and industry details.                               |
+| 3     | Add Skill Nodes & Links       | Python, Java, Machine Learning, UI Design, Docker          | Skills linked to professionals; supports endorsements.                                 |
+| 4     | Connect Professionals         | Alice ↔ Bob Smith (*Strong*, 15 mutual connections)        | Relationships store strength, mutual connection count, and connection date.             |
+| 5     | Run Queries for Insights      | - Networking recommendations<br>- Geographic clustering<br>- Employment landscape<br>- Connection analysis | Graph traversal queries extract targeted insights.                                     |
+| 6     | Update & Maintain the Network | - Update profiles & companies<br>- Strengthen ties<br>- Remove outdated links | Reflects real-time changes in careers, companies, and relationships.                   |
+
+---
+
+### Result: Advantages of This Graph Model
+
+| Database Capability           | Description                                                                              |
+|------------------------------|------------------------------------------------------------------------------------------|
+| Instant Recommendations      | Finds relevant new professional connections via mutual contacts graph traversal.         |
+| Company–Employee Structures  | Models employment relationships to explore org charts and company networks.             |
+| Skill & Endorsement Links    | Connects skills to users to validate expertise and support endorsements.                 |
+| Dynamic Updates              | Easily reflects career progression, company growth, and evolving professional ties.      |
+
+---
+
+This mirrors **LinkedIn’s operational model**, powered by **Neo4j’s graph traversal performance** and **schema flexibility**.
+
+</details>
+
+---
+
 
 <details>
 <summary>
-<strong> C. Neo4j Graph Database CRUD Operations</strong>
+<strong> D. Neo4j Graph Database CRUD Operations</strong>
 </summary>
 
 ## Data Model Architecture
@@ -861,8 +919,16 @@ Through this comprehensive exploration of Neo4j CRUD operations, we have demonst
 
 ---
 
+
+
 <details>
-<summary><strong> D. Real-World Use Case</strong></summary>
+<summary><strong> E. Advanced Queries and Analysis</strong></summary>
+
+## Use Case Scenarios
+
+---
+
+
 ## Scenario 1: Connection Recommendations
 
 **Objective**: Find connection suggestions for Alice based on mutual contacts.
@@ -1062,186 +1128,6 @@ ORDER BY InfluenceScore DESC;
 **Business Value**: Identifies influential network members for targeted outreach, thought leadership, and strategic partnerships.
 
 ---
-### (i) LinkedIn Scenario
-
----
-
-
-In professional networking platforms like LinkedIn, users want to:
-
-- Connect with other professionals  
-- Discover new people through mutual connections  
-- Explore companies, industries, and team structures  
-- View and validate each other’s skills through endorsements  
-- Receive networking recommendations  
-
-**Challenge:**  
-Traditional **relational databases** struggle to efficiently **model and query complex, interconnected relationships** between people, companies, and skills.
-
----
-
-**Why Neo4j Graph Database Fits**  
-- Stores **professionals, companies, and skills** as **nodes**  
-- Stores **relationships** (`CONNECTED_TO`, `WORKS_AT`, `ENDORSED`) as **first-class entities**  
-- Enables **fast network traversal** and **pattern discovery** for features like recommendations and endorsements
-
----
-
-### (ii) How the Graph Database Models and Solves This Problem
-
-| Step | Task                          | Example                                                    | Notes                                                                                   |
-|-------|-------------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| 1     | Create Professional Profiles  | Alice Johnson – *Software Engineer*, San Francisco, 5 yrs  | Nodes store metadata (title, location, experience). Created via Cypher `CREATE`.         |
-| 2     | Add Company Nodes             | Alice → TechCorp Inc (*Senior Software Engineer*, Engineering) | Enables exploring company structure and industry details.                               |
-| 3     | Add Skill Nodes & Links       | Python, Java, Machine Learning, UI Design, Docker          | Skills linked to professionals; supports endorsements.                                 |
-| 4     | Connect Professionals         | Alice ↔ Bob Smith (*Strong*, 15 mutual connections)        | Relationships store strength, mutual connection count, and connection date.             |
-| 5     | Run Queries for Insights      | - Networking recommendations<br>- Geographic clustering<br>- Employment landscape<br>- Connection analysis | Graph traversal queries extract targeted insights.                                     |
-| 6     | Update & Maintain the Network | - Update profiles & companies<br>- Strengthen ties<br>- Remove outdated links | Reflects real-time changes in careers, companies, and relationships.                   |
-
----
-
-### Result: Advantages of This Graph Model
-
-| Database Capability           | Description                                                                              |
-|------------------------------|------------------------------------------------------------------------------------------|
-| Instant Recommendations      | Finds relevant new professional connections via mutual contacts graph traversal.         |
-| Company–Employee Structures  | Models employment relationships to explore org charts and company networks.             |
-| Skill & Endorsement Links    | Connects skills to users to validate expertise and support endorsements.                 |
-| Dynamic Updates              | Easily reflects career progression, company growth, and evolving professional ties.      |
-
----
-
-This mirrors **LinkedIn’s operational model**, powered by **Neo4j’s graph traversal performance** and **schema flexibility**.
-
-</details>
-
----
-
-<details>
-<summary><strong> E. Advanced Queries and Analysis</strong></summary>
-
-## Use Case Scenarios
-
----
-
-### Scenario 1: Connection Recommendations  
-**Goal:** Find connection suggestions for Alice based on mutual contacts.
-
-```cypher
-MATCH (alice:User {name: "Alice Johnson"})-[:CONNECTED_TO]-(mutual:User)-[:CONNECTED_TO]-(suggestion:User)
-WHERE NOT (alice)-[:CONNECTED_TO]-(suggestion)
-  AND alice <> suggestion
-RETURN suggestion.name AS Suggestion,
-       suggestion.title AS Title,
-       suggestion.location AS Location,
-       COUNT(DISTINCT mutual) AS MutualConnections
-ORDER BY MutualConnections DESC
-LIMIT 5;
-```
-
-**Result:**
-| Suggestion     | Title             | Location            | MutualConnections |
-|----------------|-------------------|---------------------|-------------------|
-| Emma Brown     | DevOps Engineer   | San Francisco, CA   | 1                 |
-| David Wilson   | UX Designer       | Austin, TX          | 1                 |
-
----
-
-### Scenario 2: Skill Endorsement Analysis  
-**Goal:** Find the most endorsed skills in the network.
-
-```cypher
-MATCH ()-[e:ENDORSED]->()-[h:HAS_SKILL]->(s:Skill)
-RETURN s.name AS Skill,
-       s.category AS Category,
-       COUNT(e) AS Endorsements
-ORDER BY Endorsements DESC
-LIMIT 10;
-```
-
-**Result:**
-| Skill                | Category      | Endorsements |
-|----------------------|---------------|--------------|
-| Python               | Programming   | 1            |
-| Project Management   | Management    | 1            |
-
----
-
-### Scenario 3: Career Path Analysis  
-**Goal:** Find career progression patterns.
-
-```cypher
-MATCH (u:User)-[:WORKS_AT]->(c:Company)
-RETURN
-    c.industry AS Industry,
-    AVG(u.experience_years) AS AvgExperience,
-    COUNT(u) AS ProfessionalCount
-ORDER BY ProfessionalCount DESC;
-```
-
-**Result:**
-| Industry     | AvgExperience | ProfessionalCount |
-|--------------|---------------|-------------------|
-| Technology   | 6.0           | 1                 |
-| Analytics    | 3.0           | 1                 |
-| Design       | 4.0           | 1                 |
-
----
-
-### Scenario 4: Company Talent Pool  
-**Goal:** Analyze talent distribution across companies.
-
-```cypher
-MATCH (u:User)-[:WORKS_AT]->(c:Company)
-WITH c, COLLECT(u.title) AS Roles, COUNT(u) AS EmployeeCount
-RETURN
-    c.name AS Company,
-    c.industry AS Industry,
-    EmployeeCount,
-    Roles
-ORDER BY EmployeeCount DESC;
-```
-
-**Alternative:** To make roles unique, use:
-```cypher
-COLLECT(DISTINCT u.title) AS Roles
-```
-
-**Result:**
-| Company                  | Industry     | EmployeeCount | Roles                        |
-|--------------------------|--------------|---------------|------------------------------|
-| TechCorp Inc             | Technology   | 1             | ["Senior Software Engineer"] |
-| Data Solutions LLC       | Analytics    | 1             | ["Data Scientist"]           |
-| Creative Design Studio   | Design       | 1             | ["UX Designer"]              |
-
----
-
-### Scenario 5: Network Influence Score  
-**Goal:** Calculate network influence based on connections and endorsements.
-
-```cypher
-MATCH (u:User)
-OPTIONAL MATCH (u)-[c:CONNECTED_TO]-(other:User)
-WITH u, COUNT(DISTINCT other) as Connections
-OPTIONAL MATCH (u)<-[e:ENDORSED]-()
-WITH u, Connections, COUNT(e) as Endorsements
-RETURN u.name as Name,
-       u.title as Title,
-       Connections,
-       Endorsements,
-       (Connections * 2 + Endorsements * 3) as InfluenceScore
-ORDER BY InfluenceScore DESC;
-```
-
-**Result:**
-| Name            | Title                      | Connections | Endorsements | InfluenceScore |
-|-----------------|----------------------------|-------------|--------------|----------------|
-| Bob Smith       | Data Scientist             | 2           | 1            | 7              |
-| Alice Johnson   | Senior Software Engineer   | 2           | 1            | 7              |
-| Carol Davis     | Product Manager            | 2           | 0            | 4              |
-| David Wilson    | UX Designer                | 1           | 0            | 2              |
-| Emma Brown      | DevOps Engineer            | 1           | 0            | 2              |
-
 
 ## Graph Algorithms and Insights
 
